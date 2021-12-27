@@ -3,10 +3,13 @@
 A Clone of Instagram for practice by Eric
 
 
-To make this run, create your firebase firestore database and register iOS and Android app and put in following files.
+
+
+## Getting Started
+
+To make this run, create your firebase Firestore database and register iOS and Android app and put in following files.
 
 ios/Runner/GoogleService-Info.plist
 android/app/google-services.json
 
-## Getting Started
-"# InstagramClone" 
+lib/database/firebaseKeyHelper.dart // put in web config from firebase database webapp into helper variable.
