@@ -47,9 +47,35 @@ class AuthMethods {
     } on FirebaseAuthException catch (err) {
       if (err.code == 'invalid-email') {
         res = "The email is badly formatted.";
+      } else if (err.code == 'weak-password') {
+        res = 'your password is to weak add some characters';
       }
     } catch (err) {
       res = err.toString();
+    }
+    return res;
+  }
+
+  //logging in User
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = "Some error occured";
+
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email,
+            password:
+                password); //firebase auth pakage checks for user credentials
+        res = "success";
+      } else {
+        res = "Please enter all the fields";
+      }
+
+    } catch (e) {
+      res = e.toString();
     }
     return res;
   }
