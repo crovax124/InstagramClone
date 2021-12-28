@@ -29,6 +29,13 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>To pick an Image for avatar or Posts</string>
+	<key>NSCameraUsageDescription</key>
+    <string>To create an Image for avatar or Posts</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>When creating Videos for posts the sound is needed.</string>
+
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
