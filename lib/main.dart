@@ -8,7 +8,7 @@ import 'package:instagram_clone/screens/signup_screen.dart';
 import './database/firebase_keyhelper.dart';
 
 import './responsive/web_screen_layout.dart';
-import './responsive/mobile_screen_layout.dart';
+import 'responsive/mobile_screen_layout.dart';
 import './responsive/responsive_layout_screen.dart';
 import './utils/colors.dart';
 
