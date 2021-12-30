@@ -11,6 +11,16 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<model.User> getUserDetails() async {
+    User currentUser = _auth.currentUser!;
+// diese methode holt die user details aus dem Firestore und gibt es als neue instanz der User klasse aus.
+    DocumentSnapshot snap =
+        await _firestore.collection('users').doc(currentUser.uid).get();
+
+    return model.User.fromSnap(snap);
+  }
+
+  //signup user
   Future<String> signUpUser({
     required String email,
     required String password,
@@ -35,8 +45,18 @@ class AuthMethods {
 
         //add user to our database
 
-        model.User user = model.User(bio: bio, email: email, followers:[] ,photoUrl: photoUrl,uid: cred.user!.uid,following: [], userName: username );
-        await _firestore.collection('users').doc(cred.user!.uid).set(user.toJson());
+        model.User user = model.User(
+            bio: bio,
+            email: email,
+            followers: [],
+            photoUrl: photoUrl,
+            uid: cred.user!.uid,
+            following: [],
+            username: username);
+        await _firestore
+            .collection('users')
+            .doc(cred.user!.uid)
+            .set(user.toJson());
         res = "success";
       }
     } on FirebaseAuthException catch (err) {
