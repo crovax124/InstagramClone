@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/utils/colors.dart';
 
+import 'global_variables.dart';
+
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
 
@@ -46,13 +48,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
       //the pageview widget is connected to the pagecontroller. Den ich mit der Tabbar(bottom) verbunden habe. So wird die liste der tabbar items der liste der PageView items zugeordnet. 1=1 2=2 etc.
       body: PageView(
-        children: [
-          Center(child: Text('Home')),
-          Center(child: Text('Search')),
-          Center(child: Text('Post')),
-          Center(child: Text('Favorites')),
-          Center(child: Text('Profile')),
-        ],
+        children: homeScreenItems,
         //da instagram kein swiping zum navigieren hat müsste ich es hier ausstellen.
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
