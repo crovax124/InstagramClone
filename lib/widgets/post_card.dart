@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
+import 'package:instagram_clone/screens/comments_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,43 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  int commentLength = 0;
   bool isLikeAnimating = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCommentLength();
+  }
+
+  fetchCommentLength() async {
+    try {
+      QuerySnapshot snap = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snap['postId'])
+          .collection('comments')
+          .get();
+      commentLength = snap.docs.length;
+    } catch (err) {
+      showSnackBar(
+
+        err.toString(),context,
+      );
+    }
+    setState(() {});
+  }
+
+  deletePost(String postId) async {
+    try {
+      await FirestoreMethods().deletePost(postId);
+    } catch (err) {
+      showSnackBar(
+
+        err.toString(),context,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,9 +179,15 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
                 icon: const Icon(
                   Icons.comment_outlined,
+                ),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CommentScreen(
+                      postId:  widget.snap['postId'].toString(),
+                    ),
+                  ),
                 ),
               ),
               IconButton(
