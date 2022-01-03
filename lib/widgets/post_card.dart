@@ -51,7 +51,6 @@ class _PostCardState extends State<PostCard> {
       await FirestoreMethods().deletePost(postId);
     } catch (err) {
       showSnackBar(
-
         err.toString(),context,
       );
     }
@@ -102,10 +101,17 @@ class _PostCardState extends State<PostCard> {
                           shrinkWrap: true,
                           children: [
                             'Delete',
-                          ]
-                              .map(
+                          ].map(
                                 (e) => InkWell(
-                                  onTap: () {},
+                                    onTap: () {
+                                      deletePost(
+                                        widget.snap['postId']
+                                            .toString(),
+                                      );
+                                      // remove the dialog box
+                                      Navigator.of(context).pop();
+                                    },
+
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 12, horizontal: 16),
@@ -253,7 +259,7 @@ class _PostCardState extends State<PostCard> {
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     // ignore: prefer_const_constructors
                     child: Text(
-                      'View all 200 comments',
+                      'View all ${commentLength} comments',
                       style: const TextStyle(
                         fontSize: 16,
                         color: secondaryColor,
