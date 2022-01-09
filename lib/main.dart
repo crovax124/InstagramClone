@@ -23,11 +23,11 @@ void main() async {
   }
 
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) =>
-     MyApp(), // Wrap your app
-    ),
+    // DevicePreview(
+    //   enabled: !kReleaseMode,
+    //   builder: (context) =>
+   const MyApp(), // Wrap your app
+    // ),
   );
 }
 

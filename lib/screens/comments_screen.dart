@@ -18,12 +18,14 @@ class CommentScreen extends StatefulWidget {
 }
 
 class _CommentScreenState extends State<CommentScreen> {
+  late final FirestoreConnectionInterface _firestoreConnectionInterface = FirestoreConnection();
+  late final FirestoreMethodsInterface _firestoreMethodsInterface = FirestoreMethods(_firestoreConnectionInterface);
   final TextEditingController commentEditingController =
       TextEditingController();
 
   void postComment(String uid, String name, String profilePic) async {
     try {
-      String res = await FirestoreMethods().postComment(
+      String res = await _firestoreMethodsInterface.postComment(
         widget.postId,
         commentEditingController.text,
         uid,
@@ -56,7 +58,7 @@ class _CommentScreenState extends State<CommentScreen> {
       ),
 
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
+        stream: _firestoreConnectionInterface.connect()
             .collection('posts')
             .doc(widget.postId)
             .collection('comments')

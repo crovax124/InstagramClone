@@ -17,6 +17,8 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
+  late final FirestoreConnectionInterface _firestoreConnectionInterface = FirestoreConnection();
+  late final FirestoreMethodsInterface _firestoreMethodsInterface = FirestoreMethods(_firestoreConnectionInterface);
   Uint8List? _file;
   final TextEditingController _descriptonController = TextEditingController();
   bool _isLoad = false;
@@ -30,7 +32,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       _isLoad = true;
     });
     try {
-      String res = await FirestoreMethods().uploadPost(
+      String res = await _firestoreMethodsInterface.uploadPost(
           _descriptonController.text, _file!, uid, username, profileImage);
       if (res == "success") {
         setState(() {

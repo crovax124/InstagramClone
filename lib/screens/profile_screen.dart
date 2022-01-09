@@ -13,6 +13,7 @@ class ProfileScreen extends StatefulWidget {
   final String uid;
   const ProfileScreen({Key? key, required this.uid}) : super(key: key);
 
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -30,6 +31,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     getData();
   }
+  late final FirestoreConnectionInterface _firestoreConnectionInterface = FirestoreConnection();
+  late final FirestoreMethodsInterface _firestoreMethodsInterface = FirestoreMethods(_firestoreConnectionInterface);
 
   getData() async {
     setState(() {
@@ -140,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 textColor: Colors.black,
                                 borderColor: Colors.grey,
                                 function: () async {
-                                  await FirestoreMethods()
+                                  await _firestoreMethodsInterface
                                       .followUser(
                                     FirebaseAuth.instance
                                         .currentUser!.uid,
@@ -159,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 textColor: Colors.white,
                                 borderColor: Colors.blue,
                                 function: () async {
-                                  await FirestoreMethods()
+                                  await _firestoreMethodsInterface
                                       .followUser(
                                     FirebaseAuth.instance
                                         .currentUser!.uid,
@@ -230,11 +233,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   DocumentSnapshot snap =
                   (snapshot.data! as dynamic).docs[index];
 
-                  return Container(
-                    child: Image(
-                      image: NetworkImage(snap['postUrl']),
-                      fit: BoxFit.cover,
-                    ),
+                  return Image(
+                    image: NetworkImage(snap['postUrl']),
+                    fit: BoxFit.cover,
                   );
                 },
               );

@@ -3,7 +3,6 @@ import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
-import 'package:instagram_clone/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +17,10 @@ class CommentCard extends StatefulWidget {
 }
 
 class _CommentCardState extends State<CommentCard> {
+  late final FirestoreConnectionInterface _firestoreConnectionInterface = FirestoreConnection();
+  late final FirestoreMethodsInterface _firestoreMethodsInterface = FirestoreMethods(_firestoreConnectionInterface);
   @override
   Widget build(BuildContext context) {
-    bool isLikeAnimating = false;
     final User user = Provider.of<UserProvider>(context).getUser;
 
     return Container(
@@ -88,7 +88,7 @@ class _CommentCardState extends State<CommentCard> {
             padding: const EdgeInsets.all(8),
             child: IconButton(
               onPressed: () async {
-                FirestoreMethods()
+                _firestoreMethodsInterface
                     .likeComment(widget.postId, widget.snap['commentId'], user.uid, widget.snap['likes']);
               },
               icon: widget.snap['likes'].contains(user.uid)

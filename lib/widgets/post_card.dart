@@ -19,6 +19,8 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  late final FirestoreConnectionInterface _firestoreConnectionInterface = FirestoreConnection();
+  late final FirestoreMethodsInterface _firestoreMethodsInterface = FirestoreMethods(_firestoreConnectionInterface);
   int commentLength = 0;
   bool isLikeAnimating = false;
 
@@ -31,7 +33,7 @@ class _PostCardState extends State<PostCard> {
 
   fetchCommentLength() async {
     try {
-      QuerySnapshot snap = await FirebaseFirestore.instance
+      QuerySnapshot snap = await _firestoreConnectionInterface.connect()
           .collection('posts')
           .doc(widget.snap['postId'])
           .collection('comments')
@@ -48,7 +50,7 @@ class _PostCardState extends State<PostCard> {
 
   deletePost(String postId) async {
     try {
-      await FirestoreMethods().deletePost(postId);
+      await _firestoreMethodsInterface.deletePost(postId);
     } catch (err) {
       showSnackBar(
         err.toString(),context,
@@ -132,7 +134,7 @@ class _PostCardState extends State<PostCard> {
           //Image Section
           GestureDetector(
             onDoubleTap: () async {
-              FirestoreMethods().likePost(
+              _firestoreMethodsInterface.likePost(
                   widget.snap['postId'], user.uid, widget.snap['likes']);
               setState(() {
                 isLikeAnimating = true;
@@ -176,7 +178,7 @@ class _PostCardState extends State<PostCard> {
                 smallLike: true,
                 child: IconButton(
                   onPressed: () async {
-                    FirestoreMethods().likePost(
+                    _firestoreMethodsInterface.likePost(
                         widget.snap['postId'], user.uid, widget.snap['likes']);
                   },
                   icon: widget.snap['likes'].contains(user.uid)

@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/responsive/global_variables.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -13,6 +13,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  late final FirestoreConnectionInterface _firestoreConnectionInterface = FirestoreConnection();
   final TextEditingController searchController = TextEditingController();
   bool isShowUsers = false;
 
@@ -36,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: isShowUsers
           ? FutureBuilder(
-        future: FirebaseFirestore.instance
+        future: _firestoreConnectionInterface.connect()
             .collection('users')
             .where(
           'username',
@@ -77,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
         },
       )
           : FutureBuilder(
-        future: FirebaseFirestore.instance
+        future: _firestoreConnectionInterface.connect()
             .collection('posts')
             .orderBy('datePublished')
             .get(),
